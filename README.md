@@ -30,11 +30,10 @@ If you want to learn more about building native executables, please consult http
 
 ## DATA
 
-java -jar target/events-microstream-1.0.0-SNAPSHOT-runner.jar
-
 curl http://localhost:9080/api/v1/profiles
-curl http://localhost:9080/api/v1/events?postalCode=08000
+curl http://localhost:9080/api/v1/events?postalCode=08000&postalCode=08001
 
+### Create some profiles
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Javier", "avatar":"javi-avatar"}' http://localhost:9080/api/v1/profiles
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Juan", "avatar":"juan-avatar"}' http://localhost:9080/api/v1/profiles
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Jose", "avatar":"jose-avatar"}' http://localhost:9080/api/v1/profiles
@@ -42,11 +41,14 @@ curl -X POST -H "Content-Type: application/json" -d '{"name":"Julio", "avatar":"
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Juanito", "avatar":"juanito-avatar"}' http://localhost:9080/api/v1/profiles
 curl -X POST -H "Content-Type: application/json" -d '{"name":"Jese", "avatar":"jese-avatar"}' http://localhost:9080/api/v1/profiles
 
-curl -X POST -H "Content-Type: application/json" -d '{"title":"Evento1", "description":"Este es un evento cojonudo"}' http://localhost:9080/api/v1/events\?postalCode\=08000\&organizerId\=
+### Create some events (provide an organizer ID)
+curl -X POST -H "Content-Type: application/json" -d '{"title":"Event title", "description":"Awesome event"}' http://localhost:9080/api/v1/events\?postalCode\=08000\&organizerId\=
+curl -X POST -H "Content-Type: application/json" -d '{"title":"Event title", "description":"Awesome event"}' http://localhost:9080/api/v1/events\?postalCode\=08001\&organizerId\=
 
+### Add some participants to an event (provide an event and participant IDs)
 curl http://localhost:9080/api/v1/events/62ff813a-983f-40a8-93ed-6bb166ae4bff/join\?profileId\=1a951358-e4cf-40e4-8aba-7ea071fef0df
 
 
 
-
+## Microstream Rest API
 java -jar storage.restclient.app-03.00.00-MS-GA.jar --port=80

@@ -10,8 +10,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.quatro.events.control.EventsCreation;
+import com.quatro.events.control.EventsJoin;
 import com.quatro.events.control.EventsRead;
-import com.quatro.events.control.EventsSubscription;
 import com.quatro.events.entity.Event;
 import com.quatro.events.entity.EventAddress;
 import com.quatro.events.entity.EventsRepository;
@@ -20,6 +20,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
@@ -33,7 +34,7 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @ApplicationScoped
-public class EventsApi implements EventsCreation, EventsRead, EventsSubscription {
+public class EventsApi implements EventsCreation, EventsRead, EventsJoin {
 
     @Inject
     EventsRepository repository;
@@ -79,9 +80,9 @@ public class EventsApi implements EventsCreation, EventsRead, EventsSubscription
     }
 
     @POST
-    @Path("/{eventId}/join")
+    @Path("/{eventId}/register")
     @Override
-    public void join(@PathParam("eventId") String eventId, @QueryParam("profileId") String profileId) {
+    public void register(@PathParam("eventId") String eventId, @QueryParam("profileId") String profileId) {
         profilesApi.find(profileId); // validate profile
         
         String postalCode = getPostalCode(eventId);
@@ -89,8 +90,21 @@ public class EventsApi implements EventsCreation, EventsRead, EventsSubscription
         event.getJoinedProfileIds().add(profileId);
         repository.update(event);
     }
+    
+    @DELETE
+    @Path("/{eventId}/register")
+    @Override
+    public void unregister(@PathParam("eventId") String eventId, @QueryParam("profileId") String profileId) {
+        profilesApi.find(profileId); // validate profile
+        
+        String postalCode = getPostalCode(eventId);
+        Event event = repository.find(postalCode, eventId).orElseThrow(NotFoundException::new);
+        event.getJoinedProfileIds().remove(profileId);
+        repository.update(event);
+    }
 
     private String getPostalCode(String eventId) {
         return eventId.substring(0, eventId.indexOf("-"));
     }
+
 }

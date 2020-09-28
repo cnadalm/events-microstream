@@ -9,16 +9,6 @@ import one.microstream.reference.Lazy;
 
 public class StorageEvents {
   
-//    private Map<String, List<Event>> postalCodeEvents = new HashMap<>();
-//
-//    public Map<String, List<Event>> getPostalCodeEvents() {
-//        return postalCodeEvents;
-//    }
-//
-//    public void setPostalCodeEvents(Map<String, List<Event>> postalCodeEvents) {
-//        this.postalCodeEvents = postalCodeEvents;
-//    }
-    
     private Map<String, Lazy<List<Event>>> postalCodeEvents = new HashMap<>();
 
     public Map<String, Lazy<List<Event>>> getPostalCodeEvents() {

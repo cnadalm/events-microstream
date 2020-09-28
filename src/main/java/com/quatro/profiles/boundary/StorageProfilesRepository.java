@@ -10,6 +10,8 @@ import com.quatro.profiles.entity.Profile;
 import com.quatro.profiles.entity.ProfilesRepository;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import one.microstream.storage.restservice.StorageRestService;
+import one.microstream.storage.restservice.StorageRestServiceResolver;
 import one.microstream.storage.types.EmbeddedStorage;
 import one.microstream.storage.types.EmbeddedStorageManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -47,8 +49,8 @@ public class StorageProfilesRepository implements ProfilesRepository {
                 storage.setRoot(new StorageProfiles());
                 storage.storeRoot();
             }
-//            StorageRestService service = StorageRestServiceResolver.resolve(storage);
-//            service.start();
+            StorageRestService service = StorageRestServiceResolver.resolve(storage);
+            service.start();
         }
         return (StorageProfiles) storage.root();
     }
